@@ -60,3 +60,4 @@ class AssessmentDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Assessment.objects.all()
     serializer_class = AssessmentDetailSerializer
     permission_classes = [IsAuthenticated]
+    

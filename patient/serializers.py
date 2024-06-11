@@ -39,3 +39,9 @@ class AssessmentDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Assessment
         fields = '__all__'
+
+    def validate_patient(self, value):
+        user = self.context['request'].user
+        if value.clinic_user != user:
+            raise serializers.ValidationError("You can only update assessments for your own patients.")
+        return value
