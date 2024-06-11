@@ -27,3 +27,39 @@ class Patient(models.Model):
 
     def __str__(self):
         return self.full_name
+
+
+class Assessment(models.Model):
+    ASSESSMENT_TYPES = [
+        ('cognitive', 'Cognitive Status'),
+        ('physical', 'Physical Health'),
+        ('mental', 'Mental Health'),
+        ('emotional', 'Emotional Well-being'),
+        ('social', 'Social Functioning'),
+        ('nutrition', 'Nutritional Status'),
+        ('functional', 'Functional Ability'),
+        ('pain', 'Pain Assessment'),
+        ('medication', 'Medication Adherence'),
+        ('substance', 'Substance Use'),
+        ('sleep', 'Sleep Quality'),
+        ('environmental', 'Environmental Safety'),
+        ('financial', 'Financial Stability'),
+        # Add more assessment types as needed
+    ]
+
+    assessment_type = models.CharField(max_length=20, choices=ASSESSMENT_TYPES)
+    clinic = models.ForeignKey(User, on_delete=models.CASCADE, related_name='clinic')
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name='patient')
+    assessment_date = models.DateTimeField()
+    questions_and_answers = models.JSONField(default=list)  # JSON field to store questions and answers
+    final_score = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Assessment"
+        verbose_name_plural = "Assessments"
+
+    def __str__(self):
+        return f"{self.assessment_type} Assessment for {self.patient.full_name}"
