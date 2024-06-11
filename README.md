@@ -32,6 +32,8 @@
 - Implemented the data isolation for each clinicians.
 - Made Customuser model to assure data isolation rather than using django-tenants.
 - Implemented cors_headers to listen from localhost:3000 for now too
+- Made Custom pagination
+- Used Django filters for filtering
 
 **Deployement in Aws can Look like**
 
