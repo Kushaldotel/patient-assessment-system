@@ -57,3 +57,5 @@
 - Save and reload nginx
 
 For CI/CD we can use github Actions
+
+In production environment we must create a .env file and store all the credintials there. For now the project is small and everything are on settings.py
