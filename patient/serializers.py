@@ -22,4 +22,20 @@ class AssessmentSerializer(serializers.ModelSerializer):
 class AssessmentCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Assessment
+        exclude = ['clinic']
+
+    def validate_patient(self, value):
+        user = self.context['request'].user
+        if value.clinic_user != user:
+            raise serializers.ValidationError("You can only create assessments for your own patients.")
+        return value
+
+    def create(self, validated_data):
+        # Automatically set the clinic field to the current logged-in user
+        validated_data['clinic'] = self.context['request'].user
+        return super().create(validated_data)
+
+class AssessmentDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Assessment
         fields = '__all__'

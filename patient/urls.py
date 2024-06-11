@@ -1,12 +1,11 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import PatientViewSet, PatientDetailView,AssessmentViewSet
+from .views import PatientListCreateAPIView, PatientDetailView,AssessmentListCreateAPIView,AssessmentDetailAPIView
 
-router = DefaultRouter()
-router.register(r'patients', PatientViewSet, basename='patient')
-router.register(r'assessments', AssessmentViewSet, basename='assessment')
 
 urlpatterns = [
-    path('', include(router.urls)),
-    path('<int:pk>/', PatientDetailView.as_view(), name='patient-detail'),
+    path('patients/', PatientListCreateAPIView.as_view(), name='patient-list-create',),
+    path('patients/<int:pk>/', PatientDetailView.as_view(), name='patient-detail'),\
+    path('assessments/', AssessmentListCreateAPIView.as_view(), name='assessment-list-create'),
+    path('assessments/<int:pk>/', AssessmentDetailAPIView.as_view(), name='assessment-detail'),
 ]
