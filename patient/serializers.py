@@ -45,3 +45,23 @@ class AssessmentDetailSerializer(serializers.ModelSerializer):
         if value.clinic_user != user:
             raise serializers.ValidationError("You can only update assessments for your own patients.")
         return value
+
+
+class NestedAssessmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Assessment
+        fields = ['assessment_type', 'assessment_date', 'questions_and_answers', 'final_score']
+
+class PatientWithAssessmentSerializer(serializers.ModelSerializer):
+    assessments = NestedAssessmentSerializer(many=True)
+
+    class Meta:
+        model = Patient
+        fields = ['full_name', 'gender', 'phone', 'date_of_birth', 'address', 'assessments']
+
+    def create(self, validated_data):
+        assessments_data = validated_data.pop('assessments')
+        patient = Patient.objects.create(**validated_data, clinic_user=self.context['request'].user)
+        for assessment_data in assessments_data:
+            Assessment.objects.create(patient=patient, clinic=self.context['request'].user, **assessment_data)
+        return patient

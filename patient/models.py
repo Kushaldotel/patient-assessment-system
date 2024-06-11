@@ -48,8 +48,8 @@ class Assessment(models.Model):
     ]
 
     assessment_type = models.CharField(max_length=20, choices=ASSESSMENT_TYPES)
-    clinic = models.ForeignKey(User, on_delete=models.CASCADE, related_name='clinic')
-    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name='patient')
+    clinic = models.ForeignKey(User, on_delete=models.CASCADE, related_name='clinic_assessments')
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name='assessments')
     assessment_date = models.DateTimeField()
     questions_and_answers = models.JSONField(default=list)  # JSON field to store questions and answers
     final_score = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
